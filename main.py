@@ -1,7 +1,8 @@
 import flet as ft
+import modules.update as upd
 
 def main(page: ft.Page):
-    page.title = "WSL Controller 1.2.6"
+    page.title = f"{upd.get_version()} - WSL Controller by layla-focalors"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
     txt_number = ft.TextField(value="0", text_align=ft.TextAlign.RIGHT, width=100)
