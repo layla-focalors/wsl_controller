@@ -12,8 +12,15 @@
 - Backend : Python FastAPI & Shell
 - Database : SQLite
 
+### 지원 OS
+- Windows 10 / 11
+- Mac OS의 경우 실행 불가 (WSL 미지원)
+
 ### 기여자
 layla-focalors (본인)
 
 ### 라이센스
 미정
+
+### 개발 로그
+2024.05.07 - 개발 시작
