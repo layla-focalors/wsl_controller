@@ -31,3 +31,9 @@ def get_version():
     cursor.execute("SELECT * FROM settings;")
     version = cursor.fetchone()
     return version[0]
+
+def get_language():
+    cursor = connect_database()
+    cursor.execute("SELECT * FROM lang;")
+    language = cursor.fetchone()
+    return language[1]
