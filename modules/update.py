@@ -37,3 +37,12 @@ def get_language():
     cursor.execute("SELECT * FROM lang;")
     language = cursor.fetchone()
     return language[1]
+
+def get_vm_list():
+    cursor = connect_database()
+    cursor.execute("SELECT * FROM os;")
+    vms = cursor.fetchall()
+    # print(vms)
+    return vms
+
+# get_vm_list()

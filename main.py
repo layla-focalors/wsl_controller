@@ -1,11 +1,47 @@
 import flet as ft
 import modules.update as upd
 
+# VM Delete 등의 작업 후에는 반드시 page.refresh()
+# settings 창을 vm 관리탭에 다시 만들고 그걸 클릭 시 ram 등을 제어
+
+
 def deploy_page():
     return ft.Text("Deploy Page")
 
 def environment_page():
-    return ft.Text("Environment Page")
+    vm_list = upd.get_vm_list()
+    tabs = []
+    
+    if len(vm_list) != 0:
+        return ft.Column([
+            ft.Text("No WSL found!"),
+            ft.Text("Please Deploy any WSL first!, and then reload this page!")
+        ])
+    
+    for i, vm in enumerate(vm_list):
+        tab = ft.Tab(
+            text=f"{vm[3]}",
+            content=ft.Column([
+                ft.Text(
+                    f"{vm[3]}",
+                    color='white',
+                    size=20
+                )   
+            ])
+        )
+        tabs.append(tab)
+
+    env_page = ft.Column([
+        ft.Tabs(
+            selected_index=1,
+            animation_duration=300,
+            tabs=tabs,
+            expand=1,
+        ),
+        ft.Text("Environment Page"),
+        ft.Text("Environment Page"),
+    ])
+    return env_page
 
 def functions_page():
     return ft.Text("Functions Page")
