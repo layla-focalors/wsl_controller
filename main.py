@@ -2,6 +2,10 @@ import flet as ft
 import modules.update as upd
 
 def main(page: ft.Page):
+    page.window_width = 1280
+    page.window_height = 720
+    page.window_resizable = False
+    
     page.title = f"{upd.get_version()} - WSL Controller by layla-focalors"
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
 
@@ -18,6 +22,7 @@ def main(page: ft.Page):
     page.add(
         ft.Row(
             [
+                ft.ElevatedButton("Click me", on_click=lambda e: print("Hello, World!")),
                 ft.IconButton(ft.icons.REMOVE, on_click=minus_click),
                 txt_number,
                 ft.IconButton(ft.icons.ADD, on_click=plus_click),
