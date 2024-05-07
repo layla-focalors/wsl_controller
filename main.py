@@ -9,24 +9,112 @@ def deploy_page():
     return ft.Text("Deploy Page")
 
 def environment_page():
+    
+    normal_border = ft.BorderSide(0, ft.colors.with_opacity(0, ft.colors.WHITE))
+    hovered_border = ft.BorderSide(6, ft.colors.WHITE)
+
+    def on_chart_event(e: ft.PieChartEvent):
+        for idx, section in enumerate(chart.sections):
+            section.border_side = (
+                hovered_border if idx == e.section_index else normal_border
+            )
+        chart.update()
+    
     vm_list = upd.get_vm_list()
     tabs = []
     
-    if len(vm_list) != 0:
+    if len(vm_list) == 0:
+        try:
+            f = open("./help/ERROR_NO_WSL_FOUND.md", "r", encoding="utf-8")
+            md_data = f.read()
+        except:
+            md_data = "No Document File Found! Please Check : Web files : https://github.com/layla-focalors/wsl_controller/blob/main/help/ERROR_NO_WSL_FOUND.md"
+        
         return ft.Column([
             ft.Text("No WSL found!"),
-            ft.Text("Please Deploy any WSL first!, and then reload this page!")
+            ft.Text("Please Deploy any WSL first!, and then reload this page!"),
+            ft.Markdown(md_data)
         ])
+        
+    def excute_vm_settings(e):
+        print(e)
+        
+    chart = ft.PieChart(
+        sections=[
+            ft.PieChartSection(
+                value=25,
+                color=ft.colors.RED_100,
+                radius=0.8,
+                border_side=normal_border,
+            ),
+            ft.PieChartSection(
+                value=25,
+                color=ft.colors.RED_100,
+                radius=0.8,
+                border_side=normal_border,
+            ),
+            ft.PieChartSection(
+                value=25,
+                color=ft.colors.RED_100,
+                radius=0.8,
+                border_side=normal_border,
+            ),
+            ft.PieChartSection(
+                value=25,
+                color=ft.colors.RED_100,
+                radius=0.8,
+                border_side=normal_border,
+            ),
+        ],
+        sections_space=1,
+        center_space_radius=0,
+        expand=True
+    )
+    
+    vm_status = 'OK'
+    vm_colored = 'None'
+    
+    if vm_status == 'OK':
+        vm_colored = ft.colors.GREEN
+    elif vm_status == 'ERROR':
+        vm_colored = ft.colors.RED
+        vm_status = 'ERROR'
     
     for i, vm in enumerate(vm_list):
         tab = ft.Tab(
             text=f"{vm[3]}",
             content=ft.Column([
+                ft.Text('',
+                        height=5),
                 ft.Text(
-                    f"{vm[3]}",
+                    f"  {vm[3]}",
                     color='white',
-                    size=20
-                )   
+                    size=20,
+                ),
+                ft.Column([
+                    ft.Text(f'     OS : {vm[1]}'),
+                    ft.Text(f'     Ver : {vm[2]}'),
+                    ft.Text(f'     IP : {vm[4]}'),
+                    ft.Text(f'     ATS : None'),
+                    ]),
+                ft.Text('',
+                        height=2),
+                ft.Text(
+                    f"  Status",
+                    color='white',
+                    size=15,
+                ),
+                
+                ft.Text(
+                    f'     {vm_status}',
+                    color=vm_colored,
+                ),
+
+                ft.Row([
+                    ft.ElevatedButton(text="Start", on_click=excute_vm_settings('action :: start')),  
+                    ft.ElevatedButton(text="Stop", on_click=excute_vm_settings('action :: stop')),  
+                    ft.ElevatedButton(text="Save", on_click=excute_vm_settings('action :: settings')),  
+                ]),
             ])
         )
         tabs.append(tab)
@@ -38,8 +126,6 @@ def environment_page():
             tabs=tabs,
             expand=1,
         ),
-        ft.Text("Environment Page"),
-        ft.Text("Environment Page"),
     ])
     return env_page
 
